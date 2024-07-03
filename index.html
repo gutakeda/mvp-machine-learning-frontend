@@ -3,10 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Manage your expenses with YourExpenses"
-    />
+    <meta name="description" content="Manage your expenses with YourExpenses" />
     <title>Transactions List</title>
     <link
       rel="stylesheet"
@@ -138,11 +135,15 @@
           </div>
           <br />
 
+          <div id="categoryWarning" class="warning">
+            Please create a category before adding a transaction.
+          </div>
           <label for="category">Category:</label>
           <select
             id="category"
             name="category"
             aria-label="Transaction Category"
+            required
           >
             <!-- Options will be populated by script --></select
           ><br />

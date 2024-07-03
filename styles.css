@@ -197,6 +197,11 @@ form {
     box-sizing: border-box;
   }
 
+  .warning {
+    display: none;
+    color: red;
+  }
+
   .radio-group {
     display: flex;
     gap: 30px;

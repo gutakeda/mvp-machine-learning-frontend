@@ -80,15 +80,20 @@ function fetchCategories() {
     .then((data) => {
       categorySelect.innerHTML = "";
       categoriesTableBody.innerHTML = "";
-      data.forEach((category) => {
-        const option = document.createElement("option");
-        option.value = category.id;
-        option.textContent = category.name;
-        categorySelect.appendChild(option);
+      if (data.length === 0) {
+        document.getElementById("categoryWarning").style.display = "block";
+      } else {
+        document.getElementById("categoryWarning").style.display = "none";
+        data.forEach((category) => {
+          const option = document.createElement("option");
+          option.value = category.id;
+          option.textContent = category.name;
+          categorySelect.appendChild(option);
 
-        const row = createCategoryRow(category);
-        categoriesTableBody.appendChild(row);
-      });
+          const row = createCategoryRow(category);
+          categoriesTableBody.appendChild(row);
+        });
+      }
     })
     .catch((error) => console.error("Error fetching categories:", error));
 }
@@ -157,6 +162,7 @@ openTransactionModalButton.onclick = function () {
 
 closeTransactionModal.onclick = function () {
   modal.style.display = "none";
+  transactionForm.reset();
 };
 
 cancelTransactionButton.onclick = closeTransactionModal.onclick;
@@ -167,6 +173,7 @@ openCategoryModalButton.onclick = function () {
 
 closeCategoryModal.onclick = function () {
   categoryModal.style.display = "none";
+  categoryForm.reset();
 };
 
 cancelCategoryButton.onclick = closeCategoryModal.onclick;
