@@ -1,6 +1,6 @@
-# YourExpenses
+# YourExpenses Frontend
 
-YourExpenses é um aplicativo desenvolvido para ajudar os usuários a gerenciar suas finanças pessoais de maneira eficiente e organizada.
+YourExpenses Frontend é a parte da interface do usuário do aplicativo YourExpenses, desenvolvido para ajudar os usuários a gerenciar suas transações financeiras de maneira simples e intuitiva.
 
 ## Funcionalidades
 
