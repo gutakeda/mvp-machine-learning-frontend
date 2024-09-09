@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Manage your expenses with YourExpenses" />
+    <meta name="description" content="Heart Disease Model" />
     <title>Transactions List</title>
     <link
       rel="stylesheet"
@@ -13,21 +13,21 @@
   </head>
   <body>
     <div class="header">
-      <h1><i>YourExpenses</i></h1>
+      <h1><i>Heart Disease Model</i></h1>
     </div>
 
     <div class="cards-container">
       <div class="card">
-        <h2>Total Deposits</h2>
-        <p class="amount" id="totalDepositsAmount">$0.00</p>
+        <h2>Total Predicted</h2>
+        <p class="amount" id="totalPredicted">0</p>
       </div>
       <div class="card">
-        <h2>Total Withdrawals</h2>
-        <p class="amount" id="totalWithdrawalsAmount">$0.00</p>
+        <h2>Number of positive</h2>
+        <p class="amount" id="numberOfPositive">0</p>
       </div>
       <div class="card">
-        <h2>Total</h2>
-        <p class="amount" id="netTotalAmount">$0.00</p>
+        <h2>Percentage</h2>
+        <p class="amount" id="percentageOfPositive">0.00%</p>
       </div>
     </div>
 
@@ -38,9 +38,6 @@
         id="defaultTab"
       >
         Transactions
-      </button>
-      <button class="tablinks" onclick="openTab(event, 'Categories')">
-        Categories
       </button>
     </div>
 
@@ -56,38 +53,23 @@
           <thead>
             <tr>
               <th>ID</th>
-              <th>Title</th>
-              <th>Type</th>
-              <th>Amount</th>
-              <th>Category</th>
-              <th>Date</th>
+              <th>Age</th>
+              <th>Sex</th>
+              <th>Chest Pain Type</th>
+              <th>Resting BP</th>
+              <th>Cholesterol</th>
+              <th>Fasting BS</th>
+              <th>Resting ECG</th>
+              <th>Max HR</th>
+              <th>Exercise Angina</th>
+              <th>Old Peak</th>
+              <th>ST Slope</th>
+              <th>Heart Disease</th>
+              <th>Created At</th>
               <th></th>
             </tr>
           </thead>
           <tbody id="transactions-table-body">
-            <!-- Rows will be populated by script -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div id="Categories" class="tabcontent">
-      <div class="table-header">
-        <h1>Categories List</h1>
-        <button id="openCategoryModalButton" class="button">
-          Add Category
-        </button>
-      </div>
-      <div class="table-container">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody id="categories-table-body">
             <!-- Rows will be populated by script -->
           </tbody>
         </table>
@@ -99,81 +81,139 @@
         <span id="closeTransactionModal" class="close-modal">&times;</span>
         <h2>Add Transaction</h2>
         <form id="transactionForm">
-          <label for="title">Title:</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            aria-label="Transaction Title"
-            required
-          /><br />
+          <div class="form-group">
+            <label for="age">Age:</label>
+            <input
+              type="number"
+              id="age"
+              name="age"
+              aria-label="Age"
+              required
+              step="1"
+            />
+          </div>
 
-          <label for="amount">Amount:</label>
-          <input
-            type="number"
-            id="amount"
-            name="amount"
-            aria-label="Transaction Amount"
-            required
-            step="0.01"
-          /><br />
+          <div class="form-group">
+            <label for="chest_pain_type">Chest Pain Type:</label>
+            <input
+              type="number"
+              id="chest_pain_type"
+              name="chest_pain_type"
+              aria-label="chest_pain_type"
+              required
+              step="1"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="resting_bp">Resting BP:</label>
+            <input
+              type="number"
+              id="resting_bp"
+              name="resting_bp"
+              aria-label="resting_bp"
+              required
+              step="1"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="cholesterol">Cholesterol:</label>
+            <input
+              type="number"
+              id="cholesterol"
+              name="cholesterol"
+              aria-label="cholesterol"
+              required
+              step="1"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="fasting_bs">Fasting BS:</label>
+            <input
+              type="number"
+              id="fasting_bs"
+              name="fasting_bs"
+              aria-label="fasting_bs"
+              required
+              step="1"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="resting_ecg">Resting ECG:</label>
+            <input
+              type="number"
+              id="resting_ecg"
+              name="resting_ecg"
+              aria-label="resting_ecg"
+              required
+              step="1"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="max_hr">Max HR:</label>
+            <input
+              type="number"
+              id="max_hr"
+              name="max_hr"
+              aria-label="max_hr"
+              required
+              step="1"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="exercise_angina">Exercise Angina:</label>
+            <input
+              type="number"
+              id="exercise_angina"
+              name="exercise_angina"
+              aria-label="exercise_angina"
+              required
+              step="1"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="oldpeak">Old Peak:</label>
+            <input
+              type="number"
+              id="oldpeak"
+              name="oldpeak"
+              aria-label="oldpeak"
+              required
+              step="1"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="st_slope">ST Slope:</label>
+            <input
+              type="number"
+              id="st_slope"
+              name="st_slope"
+              aria-label="st_slope"
+              required
+              step="1"
+            />
+          </div>
 
           <div class="radio-group">
             <label>
-              <input
-                type="radio"
-                name="transactionType"
-                value="deposit"
-                checked
-              />
-              Deposit
+              <input type="radio" name="sex" value="1" checked />
+              Male
             </label>
             <label>
-              <input type="radio" name="transactionType" value="withdraw" />
-              Withdraw
+              <input type="radio" name="sex" value="0" />
+              Female
             </label>
           </div>
-          <br />
-
-          <div id="categoryWarning" class="warning">
-            Please create a category before adding a transaction.
-          </div>
-          <label for="category">Category:</label>
-          <select
-            id="category"
-            name="category"
-            aria-label="Transaction Category"
-            required
-          >
-            <!-- Options will be populated by script --></select
-          ><br />
 
           <footer>
             <button type="button" id="cancelTransactionButton" class="button">
-              Cancel
-            </button>
-            <button type="submit" class="button">Add</button>
-          </footer>
-        </form>
-      </div>
-    </div>
-
-    <div id="categoryModal" class="modal">
-      <div class="modal-content">
-        <span id="closeCategoryModal" class="close-modal">&times;</span>
-        <form id="categoryForm">
-          <h2>Add Category</h2>
-          <label for="categoryName">Name:</label>
-          <input
-            type="text"
-            id="categoryName"
-            name="categoryName"
-            aria-label="Category Name"
-            required
-          /><br /><br />
-
-          <footer>
-            <button type="button" id="cancelCategoryButton" class="button">
               Cancel
             </button>
             <button type="submit" class="button">Add</button>

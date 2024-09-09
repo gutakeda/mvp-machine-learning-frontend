@@ -1,12 +1,7 @@
 /* Cards elements */
-const totalDepositsElement = document.getElementById("totalDepositsAmount");
-const totalWithdrawalsElement = document.getElementById(
-  "totalWithdrawalsAmount"
-);
-const netTotalElement = document.getElementById("netTotalAmount");
-
-/* Table elements */
-const categoriesTableBody = document.getElementById("categories-table-body");
+const totalPredicted = document.getElementById("totalPredicted");
+const percentageOfPositive = document.getElementById("percentageOfPositive");
+const numberOfPositive = document.getElementById("numberOfPositive");
 const transactionsTableBody = document.getElementById(
   "transactions-table-body"
 );
@@ -17,29 +12,19 @@ const openTransactionModalButton = document.getElementById(
   "openTransactionModalButton"
 );
 const closeTransactionModal = document.getElementById("closeTransactionModal");
-const categoryModal = document.getElementById("categoryModal");
 const cancelTransactionButton = document.getElementById(
   "cancelTransactionButton"
 );
-const openCategoryModalButton = document.getElementById(
-  "openCategoryModalButton"
-);
-const closeCategoryModal = document.getElementById("closeCategoryModal");
-const cancelCategoryButton = document.getElementById("cancelCategoryButton");
 
 /* Form elements */
 const transactionForm = document.getElementById("transactionForm");
-const categoryForm = document.getElementById("categoryForm");
-const categorySelect = document.getElementById("category");
 
 /* Listeners */
 document.addEventListener("DOMContentLoaded", function () {
   fetchTransactions();
-  fetchCategories();
   document.getElementById("defaultTab").click();
 
   modal.style.display = "none";
-  categoryModal.style.display = "none";
 });
 
 document.addEventListener("click", function (event) {
@@ -55,73 +40,38 @@ function fetchTransactions() {
     .then((response) => response.json())
     .then((data) => {
       transactionsTableBody.innerHTML = "";
-      let totalDeposits = 0;
-      let totalWithdrawals = 0;
-
       data.forEach((transaction) => {
         const row = createTransactionRow(transaction);
         transactionsTableBody.appendChild(row);
-
-        if (transaction.type === "deposit") {
-          totalDeposits += transaction.amount;
-        } else if (transaction.type === "withdraw") {
-          totalWithdrawals += transaction.amount;
-        }
       });
-
-      updateTotals(totalDeposits, totalWithdrawals);
+      updateTotals(data);
     })
     .catch((error) => console.error("Error fetching transactions:", error));
 }
 
-function fetchCategories() {
-  fetch("http://localhost:5000/api/categories")
-    .then((response) => response.json())
-    .then((data) => {
-      categorySelect.innerHTML = "";
-      categoriesTableBody.innerHTML = "";
-      if (data.length === 0) {
-        document.getElementById("categoryWarning").style.display = "block";
-      } else {
-        document.getElementById("categoryWarning").style.display = "none";
-        data.forEach((category) => {
-          const option = document.createElement("option");
-          option.value = category.id;
-          option.textContent = category.name;
-          categorySelect.appendChild(option);
-
-          const row = createCategoryRow(category);
-          categoriesTableBody.appendChild(row);
-        });
-      }
-    })
-    .catch((error) => console.error("Error fetching categories:", error));
-}
-
 function createTransactionRow(transaction) {
   const row = document.createElement("tr");
-  const type = transaction.type === "deposit" ? "deposit" : "withdraw";
+  const sex = transaction.sex === 1 ? "M" : "F";
+  console.log(transaction.sex);
 
   row.innerHTML = `
     <td>${transaction.id}</td>
-    <td>${transaction.title}</td>
-    <td>${transaction.type}</td>
-    <td class="${type}">$${transaction.amount.toFixed(2)}</td>
-    <td>${transaction.category}</td>
+    <td>${transaction.age}</td>
+    <td>${sex}</td>
+    <td>${transaction.chest_pain_type}</td>
+    <td>${transaction.resting_bp}</td>
+    <td>${transaction.cholesterol}</td>
+    <td>${transaction.fasting_bs}</td>
+    <td>${transaction.resting_ecg}</td>
+    <td>${transaction.max_hr}</td>
+    <td>${transaction.exercise_angina}</td>
+    <td>${transaction.oldpeak}</td>
+    <td>${transaction.st_slope}</td>
+    <td>${transaction.heart_disease ?? "Not predicted"}</td>
     <td>${new Date(transaction.created_at).toLocaleString()}</td>
     <td><i class="fas fa-trash-alt delete-icon" data-id="${
       transaction.id
     }"></i></td>
-  `;
-  return row;
-}
-
-function createCategoryRow(category) {
-  const row = document.createElement("tr");
-  row.innerHTML = `
-      <td>${category.id}</td>
-      <td>${category.name}</td>
-      <td>$${category.total_amount}</td>
   `;
   return row;
 }
@@ -137,7 +87,6 @@ function deleteTransaction(transactionId) {
         );
       }
       fetchTransactions();
-      fetchCategories();
     })
     .catch((error) => {
       console.error(error);
@@ -146,18 +95,22 @@ function deleteTransaction(transactionId) {
 }
 
 /* Cards functions */
-function updateTotals(totalDeposits, totalWithdrawals) {
-  totalDepositsElement.textContent = `$${totalDeposits.toFixed(2)}`;
-  totalWithdrawalsElement.textContent = `$${totalWithdrawals.toFixed(2)}`;
-  netTotalElement.textContent = `$${(totalDeposits - totalWithdrawals).toFixed(
-    2
-  )}`;
+function updateTotals(data) {
+  const positiveLength = data.filter((item) => item.heart_disease === 1).length;
+  console.log(positiveLength);
+  console.log(data.length);
+
+  totalPredicted.textContent = data.length;
+  numberOfPositive.textContent = positiveLength;
+  if (positiveLength && data.length)
+    percentageOfPositive.textContent = `${(
+      positiveLength / data.length
+    ).toFixed(2)}%`;
 }
 
 /* Modal functions */
 openTransactionModalButton.onclick = function () {
   modal.style.display = "flex";
-  fetchCategories();
 };
 
 closeTransactionModal.onclick = function () {
@@ -167,39 +120,25 @@ closeTransactionModal.onclick = function () {
 
 cancelTransactionButton.onclick = closeTransactionModal.onclick;
 
-openCategoryModalButton.onclick = function () {
-  categoryModal.style.display = "flex";
-};
-
-closeCategoryModal.onclick = function () {
-  categoryModal.style.display = "none";
-  categoryForm.reset();
-};
-
-cancelCategoryButton.onclick = closeCategoryModal.onclick;
-
 /* Form functions */
 transactionForm.onsubmit = function (event) {
   event.preventDefault();
   const formData = new FormData(transactionForm);
   const payload = {
-    title: formData.get("title"),
-    type: formData.get("transactionType"),
-    amount: parseFloat(formData.get("amount")),
-    category_id: parseInt(formData.get("category")),
+    age: parseInt(formData.get("age")),
+    sex: parseInt(formData.get("sex")),
+    chest_pain_type: parseInt(formData.get("chest_pain_type")),
+    resting_bp: parseInt(formData.get("resting_bp")),
+    cholesterol: parseInt(formData.get("cholesterol")),
+    fasting_bs: parseInt(formData.get("fasting_bs")),
+    resting_ecg: parseInt(formData.get("resting_ecg")),
+    max_hr: parseInt(formData.get("max_hr")),
+    exercise_angina: parseInt(formData.get("exercise_angina")),
+    oldpeak: parseInt(formData.get("oldpeak")),
+    st_slope: parseInt(formData.get("st_slope")),
   };
   sendTransaction(payload);
   modal.style.display = "none";
-};
-
-categoryForm.onsubmit = function (event) {
-  event.preventDefault();
-  const formData = new FormData(categoryForm);
-  const payload = {
-    name: formData.get("categoryName"),
-  };
-  sendCategory(payload);
-  categoryModal.style.display = "none";
 };
 
 function sendTransaction(payload) {
@@ -221,7 +160,6 @@ function sendTransaction(payload) {
       modal.style.display = "none";
       transactionForm.reset();
       fetchTransactions();
-      fetchCategories();
     })
     .catch((error) => {
       console.error(error);
@@ -229,34 +167,6 @@ function sendTransaction(payload) {
     });
 }
 
-function sendCategory(payload) {
-  fetch("http://localhost:5000/api/category", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        debugger;
-        throw new Error(response.statusText);
-      }
-      return response.json();
-    })
-    .then(() => {
-      alert("Category added successfully");
-      categoryModal.style.display = "none";
-      categoryForm.reset();
-      fetchCategories();
-    })
-    .catch((error) => {
-      console.error(error);
-      alert("Error adding category: " + error);
-    });
-}
-
-/* Tab functions */
 function openTab(evt, tabName) {
   const tabcontent = document.querySelectorAll(".tabcontent");
   const tablinks = document.querySelectorAll(".tablinks");

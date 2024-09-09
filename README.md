@@ -1,24 +1,18 @@
-# YourExpenses Frontend
+# HeartDisease Predictor Frontend
 
-YourExpenses Frontend é a parte da interface do usuário do aplicativo YourExpenses, desenvolvido para ajudar os usuários a gerenciar suas transações financeiras de maneira simples e intuitiva.
+HeartDisease Predictor Frontend é a parte da interface do usuário do aplicativo HeartDisease, desenvolvido para ajudar os usuários a prever doença cardiaca baseada nas informações passadas.
 
 ## Funcionalidades
 
 1. **Tabela de Transações**:
 
-   - Exibe transações do tipo `deposit` e `withdrawal`.
-   - Cada transação inclui detalhes como descrição, data e valor.
+   - Exibe transações com as informações passadas e o resultado na coluna Heart Disease.
    - Os usuários podem adicionar e deletar transações.
 
-2. **Categorias**:
-
-   - Tabela mostrando o valor total de cada categoria (ex: Mercado, Farmácia).
-   - Permite adicionar quantas categorias forem necessárias.
-
-3. **Dashboard**:
-   - Mostra o total de `deposits`.
-   - Mostra o total de `withdrawals`.
-   - Calcula e exibe o saldo total (soma dos `deposits` menos os `withdrawals`).
+2. **Dashboard**:
+   - Mostra o total de predições feitas.
+   - Mostra o total de predições positivas.
+   - Calcula e exibe o percentual das predições positivas em relação ao total.
    - Atualizado automaticamente ao adicionar ou deletar transações.
 
 ## Instruções de Uso
@@ -34,4 +28,4 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE.md](L
 
 ---
 
-Esperamos que você aproveite o uso do YourExpenses para organizar suas finanças de maneira mais eficiente!
+Esperamos que você aproveite o uso do HeartDisease para organizar suas finanças de maneira mais eficiente!
