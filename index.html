@@ -95,14 +95,15 @@
 
           <div class="form-group">
             <label for="chest_pain_type">Chest Pain Type:</label>
-            <input
+            <select
               type="number"
               id="chest_pain_type"
               name="chest_pain_type"
               aria-label="chest_pain_type"
               required
-              step="1"
-            />
+            >
+              <!-- Options will be populated by script -->
+            </select>
           </div>
 
           <div class="form-group">
@@ -143,14 +144,15 @@
 
           <div class="form-group">
             <label for="resting_ecg">Resting ECG:</label>
-            <input
+            <select
               type="number"
               id="resting_ecg"
               name="resting_ecg"
               aria-label="resting_ecg"
               required
-              step="1"
-            />
+            >
+              <!-- Options will be populated by script -->
+            </select>
           </div>
 
           <div class="form-group">
@@ -167,14 +169,15 @@
 
           <div class="form-group">
             <label for="exercise_angina">Exercise Angina:</label>
-            <input
+            <select
               type="number"
               id="exercise_angina"
               name="exercise_angina"
               aria-label="exercise_angina"
               required
-              step="1"
-            />
+            >
+              <!-- Options will be populated by script -->
+            </select>
           </div>
 
           <div class="form-group">
@@ -191,25 +194,19 @@
 
           <div class="form-group">
             <label for="st_slope">ST Slope:</label>
-            <input
+            <select
               type="number"
               id="st_slope"
               name="st_slope"
               aria-label="st_slope"
-              required
               step="1"
-            />
+            >
+              <!-- Options will be populated by script -->
+            </select>
           </div>
 
-          <div class="radio-group">
-            <label>
-              <input type="radio" name="sex" value="1" checked />
-              Male
-            </label>
-            <label>
-              <input type="radio" name="sex" value="0" />
-              Female
-            </label>
+          <div id="sex" class="radio-group">
+            <!-- Options will be populated by script -->
           </div>
 
           <footer>

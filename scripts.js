@@ -18,10 +18,19 @@ const cancelTransactionButton = document.getElementById(
 
 /* Form elements */
 const transactionForm = document.getElementById("transactionForm");
+const chestPainTypeSelect = document.getElementById("chest_pain_type");
+const restingEcgSelect = document.getElementById("resting_ecg");
+const exerciseAnginaSelect = document.getElementById("exercise_angina");
+const stSlopeSelect = document.getElementById("st_slope");
+const sexRadioGroup = document.getElementById("sex");
+
+/* Global variables */
+let mappingDict = {};
 
 /* Listeners */
-document.addEventListener("DOMContentLoaded", function () {
-  fetchTransactions();
+document.addEventListener("DOMContentLoaded", async function () {
+  await fetchMapping();
+  await fetchTransactions();
   document.getElementById("defaultTab").click();
 
   modal.style.display = "none";
@@ -36,7 +45,7 @@ document.addEventListener("click", function (event) {
 
 /* Table functions */
 function fetchTransactions() {
-  fetch("http://localhost:5000/api/transactions?order_by=desc")
+  return fetch("http://localhost:5000/api/transactions?order_by=desc")
     .then((response) => response.json())
     .then((data) => {
       transactionsTableBody.innerHTML = "";
@@ -49,24 +58,98 @@ function fetchTransactions() {
     .catch((error) => console.error("Error fetching transactions:", error));
 }
 
+function fetchMapping() {
+  return fetch("http://localhost:5000/api/mapping")
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Fetched mapping data:", data); // Adicione este log
+      mappingDict = data;
+      chestPainTypeSelect.innerHTML = "";
+      restingEcgSelect.innerHTML = "";
+      exerciseAnginaSelect.innerHTML = "";
+      stSlopeSelect.innerHTML = "";
+      sexRadioGroup.innerHTML = "";
+
+      for (const [key, value] of Object.entries(data.ChestPainType)) {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = key;
+        chestPainTypeSelect.appendChild(option);
+      }
+
+      for (const [key, value] of Object.entries(data.RestingECG)) {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = key;
+        restingEcgSelect.appendChild(option);
+      }
+
+      for (const [key, value] of Object.entries(data.ExerciseAngina)) {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = key;
+        exerciseAnginaSelect.appendChild(option);
+      }
+
+      for (const [key, value] of Object.entries(data.ST_Slope)) {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = key;
+        stSlopeSelect.appendChild(option);
+      }
+
+      for (const [key, value] of Object.entries(data.Sex)) {
+        const label = document.createElement("label");
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "sex";
+        input.value = value;
+
+        // Definir o botão como selecionado se for o valor padrão
+        if (value === 1) {
+          input.checked = true; // Exemplo: defina como true para o valor padrão
+        }
+
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(key));
+
+        sexRadioGroup.appendChild(label);
+      }
+    })
+    .catch((error) => console.error("Error fetching mapping:", error));
+}
+
 function createTransactionRow(transaction) {
   const row = document.createElement("tr");
-  const sex = transaction.sex === 1 ? "M" : "F";
-  console.log(transaction.sex);
+
+  // Função auxiliar para obter o valor legível
+  const getReadableValue = (mapping, value) => {
+    console.log(mappingDict);
+    return Object.keys(mapping).find((key) => mapping[key] === value) || value;
+  };
 
   row.innerHTML = `
     <td>${transaction.id}</td>
     <td>${transaction.age}</td>
-    <td>${sex}</td>
-    <td>${transaction.chest_pain_type}</td>
+    <td>${getReadableValue(mappingDict.Sex, transaction.sex)}</td>
+    <td>${getReadableValue(
+      mappingDict.ChestPainType,
+      transaction.chest_pain_type
+    )}</td>
     <td>${transaction.resting_bp}</td>
     <td>${transaction.cholesterol}</td>
     <td>${transaction.fasting_bs}</td>
-    <td>${transaction.resting_ecg}</td>
+    <td>${getReadableValue(
+      mappingDict.RestingECG,
+      transaction.resting_ecg
+    )}</td>
     <td>${transaction.max_hr}</td>
-    <td>${transaction.exercise_angina}</td>
+    <td>${getReadableValue(
+      mappingDict.ExerciseAngina,
+      transaction.exercise_angina
+    )}</td>
     <td>${transaction.oldpeak}</td>
-    <td>${transaction.st_slope}</td>
+    <td>${getReadableValue(mappingDict.ST_Slope, transaction.st_slope)}</td>
     <td>${transaction.heart_disease ?? "Not predicted"}</td>
     <td>${new Date(transaction.created_at).toLocaleString()}</td>
     <td><i class="fas fa-trash-alt delete-icon" data-id="${
@@ -97,15 +180,16 @@ function deleteTransaction(transactionId) {
 /* Cards functions */
 function updateTotals(data) {
   const positiveLength = data.filter((item) => item.heart_disease === 1).length;
-  console.log(positiveLength);
-  console.log(data.length);
 
   totalPredicted.textContent = data.length;
   numberOfPositive.textContent = positiveLength;
+  console.log(positiveLength, data.length);
   if (positiveLength && data.length)
     percentageOfPositive.textContent = `${(
-      positiveLength / data.length
+      (positiveLength * 100) /
+      data.length
     ).toFixed(2)}%`;
+  else percentageOfPositive.textContent = "0.00%";
 }
 
 /* Modal functions */
