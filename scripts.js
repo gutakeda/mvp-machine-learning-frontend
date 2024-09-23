@@ -150,7 +150,7 @@ function createTransactionRow(transaction) {
     )}</td>
     <td>${transaction.oldpeak}</td>
     <td>${getReadableValue(mappingDict.ST_Slope, transaction.st_slope)}</td>
-    <td>${transaction.heart_disease ?? "Not predicted"}</td>
+    <td>${transaction.heart_disease ? "Yes" : "No"}</td>
     <td>${new Date(transaction.created_at).toLocaleString()}</td>
     <td><i class="fas fa-trash-alt delete-icon" data-id="${
       transaction.id
@@ -218,7 +218,7 @@ transactionForm.onsubmit = function (event) {
     resting_ecg: parseInt(formData.get("resting_ecg")),
     max_hr: parseInt(formData.get("max_hr")),
     exercise_angina: parseInt(formData.get("exercise_angina")),
-    oldpeak: parseInt(formData.get("oldpeak")),
+    oldpeak: parseFloat(formData.get("oldpeak")),
     st_slope: parseInt(formData.get("st_slope")),
   };
   sendTransaction(payload);
