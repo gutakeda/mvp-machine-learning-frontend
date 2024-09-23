@@ -199,7 +199,6 @@ openTransactionModalButton.onclick = function () {
 
 closeTransactionModal.onclick = function () {
   modal.style.display = "none";
-  transactionForm.reset();
 };
 
 cancelTransactionButton.onclick = closeTransactionModal.onclick;
@@ -239,11 +238,12 @@ function sendTransaction(payload) {
       }
       return response.json();
     })
-    .then(() => {
+    .then(async () => {
       alert("Transaction added successfully");
       modal.style.display = "none";
       transactionForm.reset();
-      fetchTransactions();
+      await fetchMapping();
+      await fetchTransactions();
     })
     .catch((error) => {
       console.error(error);
