@@ -1,6 +1,6 @@
 # HeartDisease Predictor Frontend
 
-HeartDisease Predictor Frontend é a parte da interface do usuário do aplicativo HeartDisease, desenvolvido para ajudar os usuários a prever doença cardiaca baseada nas informações passadas.
+HeartDisease Predictor Frontend é a parte da interface do usuário do aplicativo HeartDisease Predictor, desenvolvido para ajudar os usuários a prever doença cardiaca baseada nas informações passadas.
 
 ## Funcionalidades
 
@@ -28,4 +28,4 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE.md](L
 
 ---
 
-Esperamos que você aproveite o uso do HeartDisease para organizar suas finanças de maneira mais eficiente!
+Esperamos que você aproveite a aplicação HeartDisease Predictor para seu estudo de Machine Learning!
